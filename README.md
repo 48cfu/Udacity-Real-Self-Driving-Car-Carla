@@ -88,3 +88,52 @@ Specific to these libraries, the simulator grader and Carla use the following:
 | OpenMP | N/A | N/A |
 
 We are working on a fix to line up the OpenCV versions between the two.
+
+### Compiling on Udacity workspace
+
+if you get following error message
+```
+CMake Warning at /opt/ros/kinetic/share/catkin/cmake/catkinConfig.cmake:76 (find_package):
+  Could not find a package configuration file provided by "dbw_mkz_msgs" with
+  any of the following names:
+
+    dbw_mkz_msgsConfig.cmake
+    dbw_mkz_msgs-config.cmake
+
+  Add the installation prefix of "dbw_mkz_msgs" to CMAKE_PREFIX_PATH or set
+  "dbw_mkz_msgs_DIR" to a directory containing one of the above files.  If
+  "dbw_mkz_msgs" provides a separate development package or SDK, be sure it
+  has been installed.
+Call Stack (most recent call first):
+  styx/CMakeLists.txt:10 (find_package)
+
+
+-- Could not find the required component 'dbw_mkz_msgs'. The following CMake error indicates that you either need to install the package with the same name or change your environment so that it can be found.
+CMake Error at /opt/ros/kinetic/share/catkin/cmake/catkinConfig.cmake:83 (find_package):
+  Could not find a package configuration file provided by "dbw_mkz_msgs" with
+  any of the following names:
+
+    dbw_mkz_msgsConfig.cmake
+    dbw_mkz_msgs-config.cmake
+
+  Add the installation prefix of "dbw_mkz_msgs" to CMAKE_PREFIX_PATH or set
+  "dbw_mkz_msgs_DIR" to a directory containing one of the above files.  If
+  "dbw_mkz_msgs" provides a separate development package or SDK, be sure it
+  has been installed.
+Call Stack (most recent call first):
+  styx/CMakeLists.txt:10 (find_package)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/workspace/CarND-Capstone/ros/build/CMakeFiles/CMakeOutput.log".
+See also "/home/workspace/CarND-Capstone/ros/build/CMakeFiles/CMakeError.log".
+Invoking "cmake" failed
+```
+
+run the following commands
+```
+sudo apt-get update
+sudo apt-get install -y ros-kinetic-dbw-mkz-msgs
+cd /home/workspace/CarND-Capstone/ros
+rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
+```
