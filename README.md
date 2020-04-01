@@ -39,7 +39,7 @@ To set up port forwarding, please refer to the "uWebSocketIO Starter Guide" foun
 
 1. Clone the project repository
 ```bash
-git clone https://github.com/udacity/CarND-Capstone.git
+https://github.com/48cfu/Udacity-Real-Self-Driving-Car-Carla.git
 ```
 
 2. Install python dependencies
