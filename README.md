@@ -137,3 +137,27 @@ sudo apt-get install -y ros-kinetic-dbw-mkz-msgs
 cd /home/workspace/CarND-Capstone/ros
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 ```
+
+## 
+- You are running Setuptools on Python 2, which is no longer supported
+```
+pip2 install --upgrade --user pip
+pip2 install --user "setuptools<45"
+```
+
+##
+- ERROR: tensorflow 1.3.0 requires mock>=2.0.0, which is not installed.
+- ERROR: launchpadlib 1.10.3 requires testresources, which is not installed.
+
+```
+pip install mock
+pip install testresources
+```
+
+- DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. A future version of pip will drop support for Python 2.7. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
+
+make Sure python 3.X is installed
+```
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.X 1
+sudo update-alternatives --config python
+```
