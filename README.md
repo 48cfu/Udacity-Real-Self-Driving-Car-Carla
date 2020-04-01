@@ -89,7 +89,7 @@ Specific to these libraries, the simulator grader and Carla use the following:
 
 We are working on a fix to line up the OpenCV versions between the two.
 
-### Compiling on Udacity workspace
+### Compiling in Ubuntu
 
 if you get following error message
 ```
