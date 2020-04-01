@@ -89,7 +89,7 @@ Specific to these libraries, the simulator grader and Carla use the following:
 
 We are working on a fix to line up the OpenCV versions between the two.
 
-### Compiling in Ubuntu
+### Compilation errors
 
 if you get following error message
 ```
@@ -138,14 +138,14 @@ cd /home/workspace/CarND-Capstone/ros
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 ```
 
-## 
+## More errors 
 - You are running Setuptools on Python 2, which is no longer supported
 ```
 pip2 install --upgrade --user pip
 pip2 install --user "setuptools<45"
 ```
 
-##
+## even more errors 
 - ERROR: tensorflow 1.3.0 requires mock>=2.0.0, which is not installed.
 - ERROR: launchpadlib 1.10.3 requires testresources, which is not installed.
 
