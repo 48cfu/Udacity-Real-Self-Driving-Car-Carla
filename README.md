@@ -167,7 +167,11 @@ sudo update-alternatives --config python
 ```
 
 ### Brute force Fix: complete disinstallation of python/ros and new installation
-https://serverfault.com/questions/834550/how-uninstall-pip-and-python
-http://wiki.ros.org/kinetic/Installation/Ubuntu
+- https://serverfault.com/questions/834550/how-uninstall-pip-and-python
+- http://wiki.ros.org/kinetic/Installation/Ubuntu
 If error with rosdep
-https://answers.ros.org/question/334640/installation-failed-rodep-command-not-found/
+- https://answers.ros.org/question/334640/installation-failed-rodep-command-not-found/
+
+### Update dbw_mkz_msgs
+If you get the message "AttributeError: 'SteeringReport' object has no attribute 'steering_wheel_angle_cmd'"
+- https://github.com/udacity/CarND-Capstone/pull/296
