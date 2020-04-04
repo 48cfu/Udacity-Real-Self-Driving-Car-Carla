@@ -1,7 +1,7 @@
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
 ### System Architecture Diagram
-The following is a system architecture diagram showing the ROS nodes and topics used in the project. 
+The following is a system architecture diagram showing the ROS nodes and topics used in the project.
 ![](./imgs/final-project-ros-graph-v2.png)
 
 Please use **one** of the two installation options, either native **or** docker installation.
@@ -142,14 +142,14 @@ cd /home/workspace/CarND-Capstone/ros
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 ```
 
-## More errors 
+## More errors
 - You are running Setuptools on Python 2, which is no longer supported
 ```
 pip2 install --upgrade --user pip
 pip2 install --user "setuptools<45"
 ```
 
-## even more errors 
+## even more errors
 - ERROR: tensorflow 1.3.0 requires mock>=2.0.0, which is not installed.
 - ERROR: launchpadlib 1.10.3 requires testresources, which is not installed.
 
@@ -167,7 +167,12 @@ sudo update-alternatives --config python
 ```
 
 ### Brute force Fix: complete disinstallation of python/ros and new installation
-https://serverfault.com/questions/834550/how-uninstall-pip-and-python
-http://wiki.ros.org/kinetic/Installation/Ubuntu
-If error with rosdep
-https://answers.ros.org/question/334640/installation-failed-rodep-command-not-found/
+- https://serverfault.com/questions/834550/how-uninstall-pip-and-python
+- http://wiki.ros.org/kinetic/Installation/Ubuntu
+
+If error with rosdep:
+- https://answers.ros.org/question/334640/installation-failed-rodep-command-not-found/
+
+### Update dbw_mkz_msgs
+If you get the message "AttributeError: 'SteeringReport' object has no attribute 'steering_wheel_angle_cmd'"
+- https://github.com/udacity/CarND-Capstone/pull/296
