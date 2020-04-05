@@ -46,6 +46,7 @@ class Bridge(object):
         self.angular_vel = 0.
         self.bridge = CvBridge()
         self.img_count = 0
+        self.prev_time = 0
 
         self.callbacks = {
             '/vehicle/steering_cmd': self.callback_steering,
@@ -101,7 +102,11 @@ class Bridge(object):
 
     def create_steer(self, val):
         st = SteeringReport()
-        st.steering_wheel_cmd = val * math.pi/180.
+        try:            
+            st.steering_wheel_angle_cmd = val * math.pi/180.
+        except AttributeError:
+            st.steering_wheel_cmd = val * math.pi/180.
+        
         st.enabled = True
         st.speed = self.vel
         return st
