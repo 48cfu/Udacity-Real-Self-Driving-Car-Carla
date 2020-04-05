@@ -23,7 +23,7 @@ as well as to verify your TL classifier.
 TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 '''
 
-LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
+LOOKAHEAD_WPS = 100 # Number of waypoints we will publish. You can change this number
 
 
 class WaypointUpdater(object):
@@ -63,12 +63,14 @@ class WaypointUpdater(object):
         y = self.pose.pose.position.y
         try:
             closest_idx = self.waypoint_tree.query([x, y], 1)[1]
-        except AttributeError:
-            closest_idx = 0
-        # Check if closest is ahead or behind
-        closest_coord = self.waypoints_2d[closest_idx]
-        prev_coord = self.waypoints_2d[closest_idx - 1]
-
+            # Check if closest is ahead or behind
+            closest_coord = self.waypoints_2d[closest_idx]
+            prev_coord = self.waypoints_2d[closest_idx - 1]
+        except:
+            closest_idx = 1
+            closest_coord = [0, 0]
+            prev_coord = [0, 0]
+        
         # Equation for hyperplane through closest_coord
         cl_vect = np.array(closest_coord)
         prev_vect = np.array(prev_coord)
@@ -84,7 +86,7 @@ class WaypointUpdater(object):
     def publish_waypoints(self, closest_idx):
         lane = Lane()
         lane.header = self.base_waypoints.header
-        lane.waypoints = self.base_waypoints.waypoints[closest_idx: closest_idx + LOOKAHEAD_WPS]
+        lane.waypoints = self.base_waypoints.waypoints[closest_idx:closest_idx + LOOKAHEAD_WPS]
         self.final_waypoints_pub.publish(lane)
 
     def pose_cb(self, msg):

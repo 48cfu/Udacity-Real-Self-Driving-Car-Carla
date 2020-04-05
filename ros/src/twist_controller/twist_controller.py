@@ -22,7 +22,7 @@ class Controller(object):
         self.throttle_controller = PID(kp, ki, kd, mn, mx)
 
         tau = 0.5 # (1/(2pi*tau) = cutoff frequency
-        ts = 0.02 # sampling time
+        ts = .02 # sampling time
         self.vel_lpf = LowPassFilter(tau, ts)
 
         self.vehicle_mass = vehicle_mass
@@ -51,17 +51,20 @@ class Controller(object):
         self.last_vel = current_vel
 
         current_time = rospy.get_time()
-        sample_time = current_vel - self.last_time
+        sample_time = current_time - self.last_time
+
+        #rospy.loginfo('Sampling time = %s', sample_time)
+
         self.last_time = current_time
 
         throttle = self.throttle_controller.step(vel_error, sample_time)
         brake = 0
 
-        if linear_vel == 0 and current_vel < 0.1:
+        if linear_vel == 0. and current_vel < 0.1:
             throttle = 0
             brake = 700 #N*m - to hold the car in place if we are stopped at a light. Acceleration - 1m/s^2
 
-        elif throttle < 0.1 and vel_error < 0:
+        elif throttle < .1 and vel_error < 0:
             throttle = 0
             decel = max(vel_error, self.decel_limit)
             brake = abs(decel)*self.vehicle_mass*self.wheel_radius
