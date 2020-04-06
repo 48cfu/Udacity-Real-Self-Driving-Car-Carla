@@ -10,7 +10,7 @@ ONE_MPH = 0.44704
 class Controller(object):
     def __init__(self, vehicle_mass, fuel_capacity, brake_deadband, decel_limit,
         accel_limit, wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
-        
+
         # TODO: Implement
         self.yaw_controller =  YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
 
@@ -40,7 +40,7 @@ class Controller(object):
         if not dbw_enabled:
             self.throttle_controller.reset()
             return 0., 0., 0.
-        
+
         current_vel = self.vel_lpf.filt(current_vel)
 
         # some commented code
@@ -51,7 +51,7 @@ class Controller(object):
         self.last_vel = current_vel
 
         current_time = rospy.get_time()
-        sample_time = current_vel - self.last_time
+        sample_time = current_time - self.last_time
         self.last_time = current_time
 
         throttle = self.throttle_controller.step(vel_error, sample_time)
