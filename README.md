@@ -176,3 +176,8 @@ If error with rosdep:
 ### Update dbw_mkz_msgs
 If you get the message "AttributeError: 'SteeringReport' object has no attribute 'steering_wheel_angle_cmd'"
 - https://github.com/udacity/CarND-Capstone/pull/296
+
+## Not Getting camera images? IndexError tuple out or range
+As of issue https://github.com/udacity/CarND-Capstone/issues/107 :
+- pip install --upgrade pip
+- pip install --upgrade pillow
