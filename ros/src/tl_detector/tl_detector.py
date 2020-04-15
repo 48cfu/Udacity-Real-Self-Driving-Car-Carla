@@ -35,13 +35,8 @@ class TLDetector(object):
         simulator. When testing on the vehicle, the color state will not be available. You'll need to
         rely on the position of the light and the camera image to predict it.
         '''
-        sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
-        sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
-
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
-
-        self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
         self.bridge = CvBridge()
         self.light_classifier = TLClassifier()
@@ -51,6 +46,11 @@ class TLDetector(object):
         self.last_state = TrafficLight.UNKNOWN
         self.last_wp = -1
         self.state_count = 0
+
+        sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
+        sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
+
+        self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
         rospy.spin()
 
@@ -126,12 +126,12 @@ class TLDetector(object):
 
         cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "rgb8")
 
-
-        # return light.state
-
         #Get classification
-        return self.light_classifier.get_classification(cv_image)
-        # return self.light_classifier.get_classification()
+        try:
+            return self.light_classifier.get_classification(cv_image)
+        except AttributeError:
+            rospy.logerr('TLDetector object has no attribute light_classifier')
+
 
 
     def process_traffic_lights(self):

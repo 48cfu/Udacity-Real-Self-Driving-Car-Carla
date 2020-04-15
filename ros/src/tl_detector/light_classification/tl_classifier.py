@@ -5,12 +5,13 @@ import rospy
 
 from styx_msgs.msg import TrafficLight
 
-MIN_DETECTION_THRESHOLD = 0.9
+MIN_DETECTION_THRESHOLD = 0.6
 class TLClassifier(object):
     def __init__(self):
         #TODO load classifier
-        path_to_model = "/home/ictadmin/Udacity/Udacity-Real-Self-Driving-Car-Carla/ros/TrafficLightRecognModel/frozen_inference_graph_simulator3956.pb"
-        # rospy.loginfo(os.path.dirname(os.path.realpath(__file__)))
+        current_path = os.path.dirname(os.path.realpath('tl_detector/'))
+        rospy.loginfo(current_path)
+        path_to_model = current_path + "/TrafficLightRecognModel/ssd_mobilenet_frozen_inference_graph.pb"
 
         self.detection_graph = tf.Graph()
         self.classes2TL_colors = {1: TrafficLight.GREEN, 2: TrafficLight.RED, 3: TrafficLight.YELLOW, -1: TrafficLight.UNKNOWN}
@@ -71,11 +72,11 @@ class TLClassifier(object):
                 (boxes, scores, classes, num), image_np = eval_an_image(image)
                 rospy.loginfo("scores")
                 rospy.loginfo(scores)
-                rospy.loginfo("num")
-                rospy.loginfo(num)
+                # rospy.loginfo("num")
+                # rospy.loginfo(num)
                 idx_max_score = np.argmax(scores)
-                rospy.loginfo("idx_max_score")
-                rospy.loginfo(idx_max_score)
+                # rospy.loginfo("idx_max_score")
+                # rospy.loginfo(idx_max_score)
 
                 if max(scores[idx_max_score]) > MIN_DETECTION_THRESHOLD:
                     if classes[0][idx_max_score] == 1.:
@@ -85,8 +86,9 @@ class TLClassifier(object):
                     if classes[0][idx_max_score] == 3.:
                         rospy.loginfo("GIALLO")
 
-                    rospy.loginfo("classes[idx_max_score]")
-                    rospy.loginfo(int(classes[0][idx_max_score]))
+                    # rospy.loginfo("classes[idx_max_score]")
+                    # rospy.loginfo(int(classes[0][idx_max_score]))
                     return self.classes2TL_colors[int(classes[0][idx_max_score])]
                 else:
+                    rospy.loginfo("TrafficLight.UNKNOWN")
                     return TrafficLight.UNKNOWN
