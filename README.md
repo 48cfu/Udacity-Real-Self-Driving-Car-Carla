@@ -1,8 +1,59 @@
+[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+
+# CarND-Capstone Project
+## Team Members
+
+### Precious Ugo Abara <br/>
+### Marco Rossi
+
+![](./data/record.gif)
+
+
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
-### System Architecture Diagram
-The following is a system architecture diagram showing the ROS nodes and topics used in the project.
+## System Architecture Diagram
+The following is the system architecture diagram showing the ROS nodes and topics used in the project.
 ![](./imgs/final-project-ros-graph-v2.png)
+
+## Project Description
+
+In this project, some core functionalities of an autonomous vehicle are implemented using ROS nodes.
+In particular the following features are implemented:
+* Traffic Light Detection
+* Longitudinal and Lateral Control
+* Trajectory generation (as Waypoint Updater)
+
+# Traffic Light Detection
+This package contains the traffic light detection node: `tl_detector.py`. This node takes in data from the `/image_color`, `/current_pose`, and `/base_waypoints` topics and publishes the locations to stop for red traffic lights to the `/traffic_waypoint` topic.
+
+The `/current_pose` topic provides the vehicle's current position, and `/base_waypoints` provides a complete list of waypoints the car will be following.
+
+The detected traffic light takes place within `tl_detector.py`, whereas traffic light classification takes place within `../tl_detector/light_classification_model/tl_classfier.py`.<br/>
+![](./imgs/tl-detector-ros-graph.png)
+
+The traffic light detection has been performed by using a SSDMobileNet, not a VGG16 as shown in the following picture.
+
+![](./imgs/ssd_architecture.png)
+
+
+# Traffic lights detection test
+In the following pictures two sample images showing the classification results are reported: the first one for simulation data, the second one for real acquisition.
+
+
+# Longitudinal and Lateral Control
+Carla is equipped with a drive-by-wire (dbw) system, meaning the throttle, brake, and steering have electronic control. This package contains the files that are responsible for control of the vehicle: the node `dbw_node.py` and the file `twist_controller.py`, along with a pid and lowpass filter already implemented. The `dbw_node` subscribes to the `/current_velocity` topic along with the `/twist_cmd` topic to receive target linear and angular velocities. Additionally, this node will subscribe to `/vehicle/dbw_enabled`, which indicates if the car is under dbw or driver control.
+This node will publish throttle, brake, and steering commands to the `/vehicle/throttle_cmd`, `/vehicle/brake_cmd`, and `/vehicle/steering_cmd` topics.<br/>
+![](./imgs/dbw-node-ros-graph.png)
+
+
+
+# Trajectory generation (as Waypoint Updater)
+This package contains the waypoint updater node: `waypoint_updater.py`. The purpose of this node is to update the target velocity property of each waypoint based on traffic light and obstacle detection data. This node will subscribe to the `/base_waypoints`, `/current_pose`, `/obstacle_waypoint`, and `/traffic_waypoint` topics, and publish a list of waypoints ahead of the car with target velocities to the `/final_waypoints` topic.<br/>
+![](./imgs/waypoint-updater-ros-graph.png)
+
+
+
+## Useful information
 
 Please use **one** of the two installation options, either native **or** docker installation.
 
@@ -95,38 +146,7 @@ We are working on a fix to line up the OpenCV versions between the two.
 
 ### Compilation errors
 
-if you get following error message
-```
-CMake Warning at /opt/ros/kinetic/share/catkin/cmake/catkinConfig.cmake:76 (find_package):
-  Could not find a package configuration file provided by "dbw_mkz_msgs" with
-  any of the following names:
-
-    dbw_mkz_msgsConfig.cmake
-    dbw_mkz_msgs-config.cmake
-
-  Add the installation prefix of "dbw_mkz_msgs" to CMAKE_PREFIX_PATH or set
-  "dbw_mkz_msgs_DIR" to a directory containing one of the above files.  If
-  "dbw_mkz_msgs" provides a separate development package or SDK, be sure it
-  has been installed.
-Call Stack (most recent call first):
-  styx/CMakeLists.txt:10 (find_package)
-
-
--- Could not find the required component 'dbw_mkz_msgs'. The following CMake error indicates that you either need to install the package with the same name or change your environment so that it can be found.
-CMake Error at /opt/ros/kinetic/share/catkin/cmake/catkinConfig.cmake:83 (find_package):
-  Could not find a package configuration file provided by "dbw_mkz_msgs" with
-  any of the following names:
-
-    dbw_mkz_msgsConfig.cmake
-    dbw_mkz_msgs-config.cmake
-
-  Add the installation prefix of "dbw_mkz_msgs" to CMAKE_PREFIX_PATH or set
-  "dbw_mkz_msgs_DIR" to a directory containing one of the above files.  If
-  "dbw_mkz_msgs" provides a separate development package or SDK, be sure it
-  has been installed.
-Call Stack (most recent call first):
-  styx/CMakeLists.txt:10 (find_package)
-
+if you get following error message:
 
 -- Configuring incomplete, errors occurred!
 See also "/home/workspace/CarND-Capstone/ros/build/CMakeFiles/CMakeOutput.log".
