@@ -3,18 +3,29 @@ import os
 import tensorflow as tf
 import rospy
 
+# for drawing box back to image
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageColor
+
 from styx_msgs.msg import TrafficLight
 
 MIN_DETECTION_THRESHOLD = 0.6
 class TLClassifier(object):
-    def __init__(self):
+    def __init__(self, is_site):
         #TODO load classifier
         current_path = os.path.dirname(os.path.realpath('tl_detector/'))
         rospy.loginfo(current_path)
-        path_to_model = current_path + "/TrafficLightRecognModel/ssd_mobilenet_frozen_inference_graph.pb"
+
+        # Check if we are in the simulator or real site. 
+        # Load appropriate classification model
+        if is_site:
+            path_to_model = current_path + "/TrafficLightRecognModel/site_ssd_mobilenet_frozen_inference_graph.pb"
+        else:
+            path_to_model = current_path + "/TrafficLightRecognModel/simulator_ssd_mobilenet_frozen_inference_graph.pb"
 
         self.detection_graph = tf.Graph()
-        self.classes2TL_colors = {1: TrafficLight.GREEN, 2: TrafficLight.RED, 3: TrafficLight.YELLOW, -1: TrafficLight.UNKNOWN}
+        self.classes2TL_colors = {1: TrafficLight.GREEN, 2: TrafficLight.RED, 3: TrafficLight.YELLOW, 4: TrafficLight.UNKNOWN}
 
         with self.detection_graph.as_default():
             od_graph_def = tf.GraphDef()
@@ -23,11 +34,6 @@ class TLClassifier(object):
                 serialized_graph = fid.read()
                 od_graph_def.ParseFromString(serialized_graph)
                 tf.import_graph_def(od_graph_def, name='')
-
-    def load_image_into_numpy_array(self, image):
-        return np.asarray(image)
-
-
 
     def get_classification(self, image):
         """Determines the color of the traffic light in the image
@@ -70,8 +76,19 @@ class TLClassifier(object):
                     return ret, image_np
 
                 (boxes, scores, classes, num), image_np = eval_an_image(image)
-                rospy.loginfo("scores")
-                rospy.loginfo(scores)
+
+                # The current box coordinates are normalized to a range between 0 and 1.
+                # This converts the coordinates actual location on the image.
+                width, height = image_np.shape
+                
+                #box_coords = self.to_image_coords(boxes, height, width)
+
+                # Each class with be represented by a differently colored box
+                
+                #draw_boxes(image_np, box_coords, classes)
+
+                #rospy.loginfo("scores")
+                #rospy.loginfo(scores)
                 # rospy.loginfo("num")
                 # rospy.loginfo(num)
                 idx_max_score = np.argmax(scores)
@@ -92,3 +109,31 @@ class TLClassifier(object):
                 else:
                     rospy.loginfo("TrafficLight.UNKNOWN")
                     return TrafficLight.UNKNOWN
+
+    def load_image_into_numpy_array(self, image):
+            return np.asarray(image)
+
+    def to_image_coords(self, boxes, height, width):
+        """
+        The original box coordinate output is normalized, i.e [0, 1].
+        
+        This converts it back to the original coordinate based on the image
+        size.
+        """
+        box_coords = np.zeros_like(boxes)
+        box_coords[:, 0] = boxes[:, 0] * height
+        box_coords[:, 1] = boxes[:, 1] * width
+        box_coords[:, 2] = boxes[:, 2] * height
+        box_coords[:, 3] = boxes[:, 3] * width
+        
+        return box_coords
+
+    def draw_boxes(image_np, boxes, classes, thickness=4):
+        image = Image.fromarray(image_np)
+        """Draw bounding boxes on the image"""
+        draw = ImageDraw.Draw(image)
+        for i in range(len(boxes)):
+            bot, left, top, right = boxes[i, ...]
+            class_id = int(classes[i])
+            color = COLOR_LIST[class_id]
+            draw.line([(left, top), (left, bot), (right, bot), (right, top), (left, top)], width=thickness, fill=color)
