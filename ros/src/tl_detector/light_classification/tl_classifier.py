@@ -17,7 +17,7 @@ class TLClassifier(object):
         current_path = os.path.dirname(os.path.realpath('tl_detector/'))
         rospy.loginfo(current_path)
 
-        # Check if we are in the simulator or real site. 
+        # Check if we are in the simulator or real site.
         # Load appropriate classification model
         if is_site:
             path_to_model = current_path + "/TrafficLightRecognModel/site_ssd_mobilenet_frozen_inference_graph.pb"
@@ -80,11 +80,11 @@ class TLClassifier(object):
                 # The current box coordinates are normalized to a range between 0 and 1.
                 # This converts the coordinates actual location on the image.
                 width, height = image_np.shape
-                
+
                 #box_coords = self.to_image_coords(boxes, height, width)
 
                 # Each class with be represented by a differently colored box
-                
+
                 #draw_boxes(image_np, box_coords, classes)
 
                 #rospy.loginfo("scores")
@@ -112,28 +112,3 @@ class TLClassifier(object):
 
     def load_image_into_numpy_array(self, image):
             return np.asarray(image)
-
-    def to_image_coords(self, boxes, height, width):
-        """
-        The original box coordinate output is normalized, i.e [0, 1].
-        
-        This converts it back to the original coordinate based on the image
-        size.
-        """
-        box_coords = np.zeros_like(boxes)
-        box_coords[:, 0] = boxes[:, 0] * height
-        box_coords[:, 1] = boxes[:, 1] * width
-        box_coords[:, 2] = boxes[:, 2] * height
-        box_coords[:, 3] = boxes[:, 3] * width
-        
-        return box_coords
-
-    def draw_boxes(image_np, boxes, classes, thickness=4):
-        image = Image.fromarray(image_np)
-        """Draw bounding boxes on the image"""
-        draw = ImageDraw.Draw(image)
-        for i in range(len(boxes)):
-            bot, left, top, right = boxes[i, ...]
-            class_id = int(classes[i])
-            color = COLOR_LIST[class_id]
-            draw.line([(left, top), (left, bot), (right, bot), (right, top), (left, top)], width=thickness, fill=color)
