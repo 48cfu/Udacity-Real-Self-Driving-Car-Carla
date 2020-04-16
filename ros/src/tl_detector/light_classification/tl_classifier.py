@@ -3,11 +3,6 @@ import os
 import tensorflow as tf
 import rospy
 
-# for drawing box back to image
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageColor
-
 from styx_msgs.msg import TrafficLight
 
 MIN_DETECTION_THRESHOLD = 0.6
@@ -15,7 +10,6 @@ class TLClassifier(object):
     def __init__(self, is_site):
         #TODO load classifier
         current_path = os.path.dirname(os.path.realpath('tl_detector/'))
-        rospy.loginfo(current_path)
 
         # Check if we are in the simulator or real site.
         # Load appropriate classification model
@@ -77,37 +71,11 @@ class TLClassifier(object):
 
                 (boxes, scores, classes, num), image_np = eval_an_image(image)
 
-                # The current box coordinates are normalized to a range between 0 and 1.
-                # This converts the coordinates actual location on the image.
-                width, height = image_np.shape
-
-                #box_coords = self.to_image_coords(boxes, height, width)
-
-                # Each class with be represented by a differently colored box
-
-                #draw_boxes(image_np, box_coords, classes)
-
-                #rospy.loginfo("scores")
-                #rospy.loginfo(scores)
-                # rospy.loginfo("num")
-                # rospy.loginfo(num)
                 idx_max_score = np.argmax(scores)
-                # rospy.loginfo("idx_max_score")
-                # rospy.loginfo(idx_max_score)
 
                 if max(scores[idx_max_score]) > MIN_DETECTION_THRESHOLD:
-                    if classes[0][idx_max_score] == 1.:
-                        rospy.loginfo("VERDE")
-                    if classes[0][idx_max_score] == 2.:
-                        rospy.loginfo("ROSSO")
-                    if classes[0][idx_max_score] == 3.:
-                        rospy.loginfo("GIALLO")
-
-                    # rospy.loginfo("classes[idx_max_score]")
-                    # rospy.loginfo(int(classes[0][idx_max_score]))
                     return self.classes2TL_colors[int(classes[0][idx_max_score])]
                 else:
-                    rospy.loginfo("TrafficLight.UNKNOWN")
                     return TrafficLight.UNKNOWN
 
     def load_image_into_numpy_array(self, image):
