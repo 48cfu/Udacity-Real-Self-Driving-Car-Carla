@@ -31,7 +31,7 @@ The `/current_pose` topic provides the vehicle's current position, and `/base_wa
 The detected traffic light takes place within `tl_detector.py`, whereas traffic light classification takes place within `../tl_detector/light_classification_model/tl_classfier.py`.<br/>
 ![](./imgs/tl-detector-ros-graph.png)
 
-The traffic light detection has been performed by using a SSDMobileNet, not a VGG16 as shown in the following picture.
+The traffic light detection has been performed by using a SSD with MobileNet as base network (not a VGG16 as shown in the following picture).
 
 ![](./imgs/ssd_architecture.png)
 
