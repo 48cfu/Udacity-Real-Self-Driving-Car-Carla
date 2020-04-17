@@ -3,8 +3,8 @@
 # CarND-Capstone Project
 ## Team Members
 
-### Precious Ugo Abara <br/>
-### Marco Rossi
+### Precious Ugo Abara (precious.ugoabara@gmail.com)<br/>
+### Marco Rossi (marco.rossi4@fcagroup.com)<br/>
 
 ![](./data/record.gif)
 
@@ -31,14 +31,19 @@ The `/current_pose` topic provides the vehicle's current position, and `/base_wa
 The detected traffic light takes place within `tl_detector.py`, whereas traffic light classification takes place within `../tl_detector/light_classification_model/tl_classfier.py`.<br/>
 ![](./imgs/tl-detector-ros-graph.png)
 
-The traffic light detection has been performed by using a SSDMobileNet, not a VGG16 as shown in the following picture.
+The traffic light detection has been performed by using a SSD with MobileNet as base network (not a VGG16 as shown in the following picture).
 
 ![](./imgs/ssd_architecture.png)
 
 
 # Traffic lights detection test
-In the following pictures two sample images showing the classification results are reported: the first one for simulation data, the second one for real acquisition.
-
+In the following pictures two sample images showing the classification results are reported: the first one for simulation data [Link to video](./imgs/sim/inferred.avi).:<br/>
+<img src="./imgs/sim/left0028.jpg" width="400"> <img src="./imgs/sim/left0028d.jpg" width="400"> <br/>
+<img src="./imgs/sim/left0553.jpg" width="400"> <img src="./imgs/sim/left0553d.jpg" width="400"> <br/>
+ The second one for real acquisition [Link to video](./imgs/real/inferred.avi): </br>
+<img src="./imgs/real/left0277.jpg" width="400"> <img src="./imgs/real/left0277d.jpg" width="400"> <br/>
+<img src="./imgs/real/left0444.jpg" width="400"> <img src="./imgs/real/left0444d.jpg" width="400"> <br/>
+<img src="./imgs/real/left0544.jpg" width="400"> <img src="./imgs/real/left0544d.jpg" width="400"> <br/>
 
 # Longitudinal and Lateral Control
 Carla is equipped with a drive-by-wire (dbw) system, meaning the throttle, brake, and steering have electronic control. This package contains the files that are responsible for control of the vehicle: the node `dbw_node.py` and the file `twist_controller.py`, along with a pid and lowpass filter already implemented. The `dbw_node` subscribes to the `/current_velocity` topic along with the `/twist_cmd` topic to receive target linear and angular velocities. Additionally, this node will subscribe to `/vehicle/dbw_enabled`, which indicates if the car is under dbw or driver control.
