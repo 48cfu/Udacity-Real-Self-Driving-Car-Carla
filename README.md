@@ -3,8 +3,8 @@
 # CarND-Capstone Project
 ## Team Members
 
-### Precious Ugo Abara (precious.ugoabara@gmail.com)<br/>
-### Marco Rossi (marco.rossi4@fcagroup.com)<br/>
+### Precious Ugo Abara<br/>
+### Marco Rossi<br/>
 
 ![](./data/record.gif)
 
